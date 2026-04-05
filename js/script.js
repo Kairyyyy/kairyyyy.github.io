@@ -74,9 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
+                icon.style.transition = 'transform 0.3s ease';
+                icon.style.transform = 'rotate(90deg)';
             } else {
                 icon.classList.remove('fa-times');
                 icon.classList.add('fa-bars');
+                icon.style.transform = 'rotate(0deg)';
             }
         });
         
@@ -87,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (icon) {
                     icon.classList.remove('fa-times');
                     icon.classList.add('fa-bars');
+                    icon.style.transform = 'rotate(0deg)';
                 }
             });
         });
@@ -201,6 +205,147 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     console.log('Portfolio ready!');
+    
+    // ========== TYPING ANIMATION ==========
+    const roles = ["Web Developer", "Game Developer", "IT Support Specialist"];
+    let roleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let isPaused = false;
+    const typedRoleElement = document.getElementById('typedRole');
+    
+    function typeEffect() {
+        if (!typedRoleElement) return;
+        if (isPaused) return;
+        
+        const currentRole = roles[roleIndex];
+        
+        if (isDeleting) {
+            if (charIndex > 0) {
+                charIndex--;
+                typedRoleElement.innerHTML = currentRole.substring(0, charIndex) + '<span class="typed-cursor">|</span>';
+                setTimeout(typeEffect, 50);
+            } else {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                setTimeout(typeEffect, 300);
+            }
+        } else {
+            if (charIndex < currentRole.length) {
+                charIndex++;
+                typedRoleElement.innerHTML = currentRole.substring(0, charIndex) + '<span class="typed-cursor">|</span>';
+                setTimeout(typeEffect, 150);
+            } else {
+                typedRoleElement.innerHTML = currentRole;
+                isPaused = true;
+                setTimeout(() => {
+                    isPaused = false;
+                    isDeleting = true;
+                    typeEffect();
+                }, 1500);
+            }
+        }
+    }
+    
+    if (typedRoleElement) {
+        typedRoleElement.innerHTML = '<span class="typed-cursor">|</span>';
+        setTimeout(typeEffect, 500);
+    }
+    
+    // ========== IMAGE SLIDESHOW ==========
+    const images = [
+        'images/pic1.png',
+        'images/pic2.png', 
+        'images/pic3.png'
+    ];
+    let currentImageIndex = 0;
+    let isTransitioning = false;
+    let slideshowInterval = null;
+    const profileImgSlide = document.getElementById('profileImg');
+    const profilePlaceholder = document.querySelector('.profile-pic-placeholder');
+    
+    let pulseRing = document.querySelector('.pulse-ring');
+    if (!pulseRing && profilePlaceholder) {
+        pulseRing = document.createElement('div');
+        pulseRing.className = 'pulse-ring';
+        profilePlaceholder.appendChild(pulseRing);
+    }
+    
+    const preloadedImages = [];
+    function preloadImages() {
+        images.forEach((src, index) => {
+            const img = new Image();
+            img.onload = () => {
+                preloadedImages[index] = img;
+            };
+            img.src = src;
+        });
+    }
+    
+    function showPulseEffect() {
+        if (!pulseRing) return;
+        pulseRing.classList.remove('active');
+        void pulseRing.offsetWidth;
+        pulseRing.classList.add('active');
+        
+        if (profilePlaceholder) {
+            profilePlaceholder.classList.add('ripple-effect');
+            setTimeout(() => {
+                profilePlaceholder.classList.remove('ripple-effect');
+            }, 800);
+        }
+        
+        if (profileImgSlide) {
+            profileImgSlide.classList.add('pulse-glow');
+            setTimeout(() => {
+                profileImgSlide.classList.remove('pulse-glow');
+            }, 600);
+            
+            profileImgSlide.classList.add('shine-effect');
+            setTimeout(() => {
+                profileImgSlide.classList.remove('shine-effect');
+            }, 800);
+        }
+    }
+    
+    function changeImage() {
+        if (!profileImgSlide || isTransitioning) return;
+        showPulseEffect();
+        
+        setTimeout(() => {
+            isTransitioning = true;
+            profileImgSlide.style.opacity = '0';
+            
+            setTimeout(() => {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                if (preloadedImages[currentImageIndex]) {
+                    profileImgSlide.src = preloadedImages[currentImageIndex].src;
+                } else {
+                    profileImgSlide.src = images[currentImageIndex];
+                }
+                profileImgSlide.style.opacity = '1';
+                
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 500);
+            }, 500);
+        }, 400);
+    }
+    
+    if (profileImgSlide && profilePlaceholder) {
+        preloadImages();
+        profileImgSlide.src = images[0];
+        profileImgSlide.style.transition = 'opacity 0.5s ease-in-out';
+        profileImgSlide.style.opacity = '1';
+        slideshowInterval = setInterval(changeImage, 5000);
+    }
+    
+    // Clean up on page unload
+    window.addEventListener('beforeunload', () => {
+        if (slideshowInterval) {
+            clearInterval(slideshowInterval);
+        }
+    });
 });
 
 // ========== PARTICLE BACKGROUND EFFECT ==========
@@ -240,184 +385,6 @@ window.addEventListener('resize', () => {
         (lastWidth < 768 && window.innerWidth >= 768)) {
         createParticles();
         lastWidth = window.innerWidth;
-    }
-});
-
-// ========== TYPING ANIMATION WITH CURSOR INCLUDED IN THE TEXT ==========
-const roles = ["Web Developer", "Game Developer", "IT Support Specialist"];
-let roleIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let isPaused = false;
-const typedRoleElement = document.getElementById('typedRole');
-
-function typeEffect() {
-    if (!typedRoleElement) return;
-    if (isPaused) return;
-    
-    const currentRole = roles[roleIndex];
-    
-    if (isDeleting) {
-        // Delete characters one by one (slower delete)
-        if (charIndex > 0) {
-            charIndex--;
-            typedRoleElement.innerHTML = currentRole.substring(0, charIndex) + '<span class="typed-cursor">|</span>';
-            setTimeout(typeEffect, 50); // Slower delete speed
-        } else {
-            // Finished deleting, move to next role
-            isDeleting = false;
-            roleIndex = (roleIndex + 1) % roles.length;
-            setTimeout(typeEffect, 300);
-        }
-    } else {
-        // Type characters one by one (slower typing)
-        if (charIndex < currentRole.length) {
-            charIndex++;
-            typedRoleElement.innerHTML = currentRole.substring(0, charIndex) + '<span class="typed-cursor">|</span>';
-            setTimeout(typeEffect, 150); // Slower typing speed (was 70, now 120)
-        } else {
-            // Finished typing, remove cursor then pause and delete
-            typedRoleElement.innerHTML = currentRole;
-            isPaused = true;
-            setTimeout(() => {
-                isPaused = false;
-                isDeleting = true;
-                typeEffect();
-            }, 1500);
-        }
-    }
-}
-
-// Start the typing effect
-if (typedRoleElement) {
-    typedRoleElement.innerHTML = '<span class="typed-cursor">|</span>';
-    setTimeout(typeEffect, 500);
-}
-
-// ========== IMAGE SLIDESHOW WITH ENHANCED PULSE WAVE (5 seconds) ==========
-const images = [
-    'images/pic1.png',
-    'images/pic2.png', 
-    'images/pic3.png'
-];
-let currentImageIndex = 0;
-let isTransitioning = false;
-let slideshowInterval = null;
-const profileImg = document.getElementById('profileImg');
-const profilePlaceholder = document.querySelector('.profile-pic-placeholder');
-
-// Create pulse ring element
-let pulseRing = document.querySelector('.pulse-ring');
-if (!pulseRing && profilePlaceholder) {
-    pulseRing = document.createElement('div');
-    pulseRing.className = 'pulse-ring';
-    profilePlaceholder.appendChild(pulseRing);
-}
-
-// Preload images
-const preloadedImages = [];
-function preloadImages() {
-    images.forEach((src, index) => {
-        const img = new Image();
-        img.onload = () => {
-            preloadedImages[index] = img;
-        };
-        img.src = src;
-    });
-}
-
-// Show enhanced pulse wave effect before transition
-function showPulseEffect() {
-    if (!pulseRing) return;
-    
-    // Remove active class and force reflow
-    pulseRing.classList.remove('active');
-    void pulseRing.offsetWidth;
-    
-    // Add active class to start animation
-    pulseRing.classList.add('active');
-    
-    // Add ripple effect to container
-    profilePlaceholder.classList.add('ripple-effect');
-    setTimeout(() => {
-        profilePlaceholder.classList.remove('ripple-effect');
-    }, 800);
-    
-    // Add glow effect to image
-    profileImg.classList.add('pulse-glow');
-    setTimeout(() => {
-        profileImg.classList.remove('pulse-glow');
-    }, 600);
-    
-    // Add shine effect
-    profileImg.classList.add('shine-effect');
-    setTimeout(() => {
-        profileImg.classList.remove('shine-effect');
-    }, 800);
-}
-
-function changeImage() {
-    if (!profileImg || isTransitioning) return;
-    
-    // Show the enhanced pulse wave effect
-    showPulseEffect();
-    
-    // Wait for the pulse effect to complete before changing image
-    setTimeout(() => {
-        isTransitioning = true;
-        
-        // Add fade out effect
-        profileImg.style.opacity = '0';
-        
-        setTimeout(() => {
-            // Change to next image
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            
-            // Use preloaded image if available
-            if (preloadedImages[currentImageIndex]) {
-                profileImg.src = preloadedImages[currentImageIndex].src;
-            } else {
-                profileImg.src = images[currentImageIndex];
-            }
-            
-            // Ensure the image maintains its shape
-            profileImg.style.borderRadius = '38% 62% 63% 37% / 41% 44% 56% 59%';
-            profileImg.style.objectFit = 'cover';
-            profileImg.style.width = '100%';
-            profileImg.style.height = '100%';
-            
-            // Add fade in effect
-            profileImg.style.opacity = '1';
-            
-            setTimeout(() => {
-                isTransitioning = false;
-            }, 500);
-        }, 500);
-    }, 400);
-}
-
-// Start the slideshow if the image exists
-if (profileImg && profilePlaceholder) {
-    preloadImages();
-    
-    // Set initial image
-    profileImg.src = images[0];
-    profileImg.style.transition = 'opacity 0.5s ease-in-out';
-    profileImg.style.opacity = '1';
-    profileImg.style.borderRadius = '38% 62% 63% 37% / 41% 44% 56% 59%';
-    profileImg.style.objectFit = 'cover';
-    profileImg.style.width = '100%';
-    profileImg.style.height = '100%';
-    profileImg.style.display = 'block';
-    
-    // Change image every 5 seconds
-    slideshowInterval = setInterval(changeImage, 5000);
-}
-
-// Clean up on page unload
-window.addEventListener('beforeunload', () => {
-    if (slideshowInterval) {
-        clearInterval(slideshowInterval);
     }
 });
 
