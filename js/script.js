@@ -420,3 +420,16 @@ window.addEventListener('beforeunload', () => {
         clearInterval(slideshowInterval);
     }
 });
+
+// Debounce resize events for better performance
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        if ((lastWidth >= 768 && window.innerWidth < 768) || 
+            (lastWidth < 768 && window.innerWidth >= 768)) {
+            createParticles();
+            lastWidth = window.innerWidth;
+        }
+    }, 250);
+});
