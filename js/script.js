@@ -346,6 +346,100 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(slideshowInterval);
         }
     });
+    
+    // ========== CERTIFICATE LIGHTBOX FUNCTIONALITY ==========
+    function initLightbox() {
+        // Create modal elements if they don't exist
+        let modal = document.getElementById('lightbox-modal');
+        
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'lightbox-modal';
+            modal.className = 'lightbox-modal';
+            modal.innerHTML = `
+                <span class="close-lightbox">&times;</span>
+                <img class="lightbox-content" id="lightbox-img">
+                <div class="lightbox-caption" id="lightbox-caption"></div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        const modalImg = document.getElementById('lightbox-img');
+        const captionText = document.getElementById('lightbox-caption');
+        const closeBtn = modal.querySelector('.close-lightbox');
+        
+        // Get all certificate images
+        const certImages = document.querySelectorAll('.certificate-image');
+        
+        certImages.forEach(container => {
+            // Remove existing listeners to avoid duplicates
+            container.removeEventListener('click', lightboxClickHandler);
+            // Add click listener
+            container.addEventListener('click', lightboxClickHandler);
+            
+            function lightboxClickHandler(e) {
+                const img = container.querySelector('img');
+                if (img && img.src) {
+                    modal.classList.add('show');
+                    modalImg.src = img.src;
+                    modalImg.alt = img.alt || 'Certificate Image';
+                    captionText.textContent = img.alt || 'Certificate Image';
+                    
+                    // Prevent body scroll when modal is open
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        });
+        
+        // Close modal function
+        function closeModal() {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                modalImg.src = '';
+            }, 300);
+        }
+        
+        // Close button click
+        if (closeBtn) {
+            closeBtn.removeEventListener('click', closeModal);
+            closeBtn.addEventListener('click', closeModal);
+        }
+        
+        // Close when clicking outside the image
+        modal.removeEventListener('click', modalOutsideClick);
+        modal.addEventListener('click', modalOutsideClick);
+        
+        function modalOutsideClick(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // Close with Escape key
+        document.removeEventListener('keydown', escapeKeyHandler);
+        document.addEventListener('keydown', escapeKeyHandler);
+        
+        function escapeKeyHandler(e) {
+            if (e.key === 'Escape' && modal.classList.contains('show')) {
+                closeModal();
+            }
+        }
+    }
+    
+    // Initialize lightbox
+    initLightbox();
+    
+    // Re-initialize lightbox if new certificates are added dynamically (optional)
+    // For mutation observer to watch for dynamically added certificate images
+    const observerLightbox = new MutationObserver(() => {
+        initLightbox();
+    });
+    
+    observerLightbox.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 });
 
 // ========== PARTICLE BACKGROUND EFFECT ==========
