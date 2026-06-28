@@ -494,3 +494,254 @@ window.addEventListener('resize', () => {
         }
     }, 250);
 });
+
+// ========== CHATBOT FUNCTIONALITY ==========
+function initChatbot() {
+    const chatbotToggle = document.getElementById('chatbotToggle');
+    const chatbotContainer = document.getElementById('chatbotContainer');
+    const chatbotClose = document.getElementById('chatbotClose');
+    const chatbotMessages = document.getElementById('chatbotMessages');
+    const chatbotQuestions = document.getElementById('chatbotQuestions');
+    const questionButtons = document.querySelectorAll('.question-btn');
+
+    // Check if elements exist
+    if (!chatbotToggle || !chatbotContainer) return;
+
+    // Chatbot responses database
+    const responses = {
+        about: {
+            answer: `👋 <strong>About Kairy Ken Magno</strong><br><br>
+            Kairy is a passionate <strong>full-stack developer</strong> and creative problem solver from the Philippines. He specializes in building responsive web applications using <strong>Laravel</strong> and modern frontend technologies.<br><br>
+            🎯 <strong>Key Highlights:</strong><br>
+            • Aspiring full-stack developer<br>
+            • Game development enthusiast (Unity)<br>
+            • IT support & server management experience<br>
+            • Strong focus on clean, maintainable code<br>
+            • Continuous learner and team player`
+        },
+        skills: {
+            answer: `💻 <strong>Technical Skills</strong><br><br>
+            <strong>Web Development:</strong><br>
+            HTML5, CSS3, JavaScript, ReactJS, Bootstrap, Tailwind CSS<br><br>
+            <strong>Backend:</strong><br>
+            PHP (Laravel), Python, MySQL, MongoDB, REST APIs<br><br>
+            <strong>Game Development:</strong><br>
+            Unity, C#, Blender (3D Modeling)<br><br>
+            <strong>Mobile:</strong><br>
+            Flutter, Android Studio<br><br>
+            <strong>IT & Hardware:</strong><br>
+            Proxmox, Virtual Machines, PC Assembly, Arduino, Networking<br><br>
+            <strong>Programming:</strong><br>
+            Java (OOP), Python Scripting<br><br>
+            <strong>Soft Skills:</strong><br>
+            Problem-solving, Team collaboration, Communication, Attention to detail`
+        },
+        projects: {
+            answer: `🚀 <strong>Featured Projects</strong><br><br>
+            <strong>🎮 The Finding of Isabel</strong><br>
+            A 3D horror game built with Unity and C# as a capstone project. Features a 3D model of the University of Rizal System campus with exploration, puzzles, and immersive storytelling.<br>
+            <em>Tech: C#, Unity, Blender</em><br><br>
+            <strong>🏀 HOOPS Hub</strong><br>
+            Manufacturing software designed to help businesses monitor production processes and improve workflow organization.<br>
+            <em>Tech: Flutter, Android Studio</em><br><br>
+            <strong>🌐 Web Applications</strong><br>
+            Various web development projects using Laravel framework with responsive design and modern UI/UX principles.`
+        },
+        experience: {
+            answer: `📋 <strong>Experience & Expertise</strong><br><br>
+            <strong>Web Development:</strong><br>
+            • Building responsive web apps with Laravel<br>
+            • Frontend development with ReactJS<br>
+            • REST API development & integration<br><br>
+            <strong>Game Development:</strong><br>
+            • Unity game development with C#<br>
+            • 3D modeling with Blender<br>
+            • Game design & storytelling<br><br>
+            <strong>IT Support:</strong><br>
+            • Server setup & management (Proxmox)<br>
+            • PC & server assembly<br>
+            • Network configuration basics<br>
+            • Hardware troubleshooting<br><br>
+            <strong>Currently:</strong> Open to opportunities and freelance projects`
+        },
+        education: {
+            answer: `🎓 <strong>Education</strong><br><br>
+            Kairy is a recent graduate with a degree in Information Technology. During his academic journey, he developed strong foundations in:<br><br>
+            • Web development & programming<br>
+            • Database management<br>
+            • Software engineering principles<br>
+            • Game development<br>
+            • IT infrastructure<br><br>
+            His capstone project "<strong>The Finding of Isabel</strong>" showcases his game development and 3D modeling skills, featuring a detailed recreation of the University of Rizal System campus.`
+        },
+        contact: {
+            answer: `📧 <strong>Get in Touch with Kairy</strong><br><br>
+            <strong>Email:</strong><br>
+            kairykenm@gmail.com<br><br>
+            <strong>Phone:</strong><br>
+            +63 (915) 957-4952<br><br>
+            <strong>Location:</strong><br>
+            Philippines<br><br>
+            <strong>Social Links:</strong><br>
+            • GitHub: github.com/Kairyyyy<br>
+            • LinkedIn: linkedin.com/in/kairy-ken-magno<br>
+            • Facebook: facebook.com/kairy<br><br>
+            Kairy is always open to collaboration, freelance work, and exciting opportunities. Don't hesitate to reach out!`
+        },
+        certificates: {
+            answer: `📜 <strong>Certificates & Achievements</strong><br><br>
+            Kairy has earned various certificates demonstrating his commitment to continuous learning and professional development.<br><br>
+            Check out the <strong>Certificates section</strong> on this portfolio to view his latest certifications in web development, programming, and other technical skills.<br><br>
+            <em>💡 Tip: Click on any certificate image to view it in full size!</em>`
+        },
+        game: {
+            answer: `🎮 <strong>Game Development Journey</strong><br><br>
+            Kairy is passionate about game development, specializing in:<br><br>
+            <strong>Unity Engine:</strong><br>
+            • 3D game development<br>
+            • C# scripting<br>
+            • Game mechanics & physics<br>
+            • Level design<br><br>
+            <strong>3D Modeling:</strong><br>
+            • Blender for asset creation<br>
+            • Environment design<br>
+            • Character modeling<br><br>
+            <strong>Notable Project:</strong><br>
+            "<strong>The Finding of Isabel</strong>" - A horror game featuring exploration, puzzles, and immersive storytelling, built as a capstone project.<br><br>
+            <em>Watch the gameplay on YouTube!</em>`
+        }
+    };
+
+    // Function to add a message to the chat
+    function addMessage(type, content) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chatbot-message ${type}-message`;
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        messageContent.innerHTML = `<p>${content}</p>`;
+        
+        messageDiv.appendChild(messageContent);
+        chatbotMessages.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Function to show typing indicator
+    function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'chatbot-message bot-message typing-message';
+        typingDiv.innerHTML = `
+            <div class="message-content">
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        `;
+        chatbotMessages.appendChild(typingDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        return typingDiv;
+    }
+
+    // Function to remove typing indicator
+    function removeTypingIndicator(indicator) {
+        if (indicator && indicator.parentNode) {
+            indicator.remove();
+        }
+    }
+
+    // Function to handle question click
+    function handleQuestionClick(question) {
+        const questionText = question.textContent.trim();
+        
+        // Disable all question buttons temporarily
+        questionButtons.forEach(btn => btn.disabled = true);
+        
+        // Add user message
+        addMessage('user', questionText);
+        
+        // Show typing indicator
+        const typingIndicator = showTypingIndicator();
+        
+        // Get the question key from data attribute
+        const questionKey = question.getAttribute('data-question');
+        
+        // Simulate delay for natural feeling
+        setTimeout(() => {
+            // Remove typing indicator
+            removeTypingIndicator(typingIndicator);
+            
+            // Get response
+            if (questionKey && responses[questionKey]) {
+                addMessage('bot', responses[questionKey].answer);
+            } else {
+                addMessage('bot', "I'm not sure about that. Try asking about Kairy's skills, projects, or how to contact him! 😊");
+            }
+            
+            // Re-enable question buttons
+            questionButtons.forEach(btn => btn.disabled = false);
+        }, 1500);
+    }
+
+    // Add click listeners to question buttons
+    questionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            handleQuestionClick(this);
+        });
+    });
+
+    // Toggle chatbot open/close
+    chatbotToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = chatbotContainer.classList.contains('open');
+        
+        if (isOpen) {
+            closeChatbot();
+        } else {
+            openChatbot();
+        }
+    });
+
+    // Close button
+    chatbotClose.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeChatbot();
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!chatbotContainer.contains(e.target) && 
+            !chatbotToggle.contains(e.target) && 
+            chatbotContainer.classList.contains('open')) {
+            closeChatbot();
+        }
+    });
+
+    function openChatbot() {
+        chatbotContainer.classList.add('open');
+        chatbotToggle.classList.add('active');
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    function closeChatbot() {
+        chatbotContainer.classList.remove('open');
+        chatbotToggle.classList.remove('active');
+    }
+
+    // Prevent chatbot container clicks from closing
+    chatbotContainer.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    console.log('Chatbot initialized!');
+}
+
+// Initialize chatbot when DOM is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initChatbot);
+} else {
+    initChatbot();
+}
