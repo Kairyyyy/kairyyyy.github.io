@@ -2,24 +2,476 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.0, user-scalable=no" />
   <title>Kairy Ken Magno | Professional Portfolio</title>
-  <!-- Link to external CSS -->
-  <link rel="stylesheet" href="css/style.css" />
-  <!-- Font Awesome Icons (for professional icons) -->
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <!-- Google Fonts: Poppins + Inter for clean modern look -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <!-- Devicon for additional technology icons (Tailwind, Flutter, etc.) -->
+  <!-- Google Fonts: Poppins + Inter + JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Devicon for tech icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css" />
-  <!-- Simple Icons for brand logos -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons-font@v13/font/simple-icons.min.css" />
-  <!-- Google Fonts for Certificates -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --surface-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --border-light: #e2e8f0;
+      --accent-blue: #2563eb;
+      --accent-blue-light: #3b82f6;
+      --accent-blue-dark: #1d4ed8;
+      --accent-glow: rgba(37, 99, 235, 0.1);
+      --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      --shadow-md: 0 20px 25px -12px rgba(0, 0, 0, 0.08);
+      --gradient-blue: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      --gradient-vibrant: linear-gradient(135deg, #1e40af, #3b82f6, #60a5fa, #3b82f6, #1e40af);
+      --navbar-bg: rgba(255, 255, 255, 0.98);
+      --navbar-border: #e2e8f0;
+      --card-border: #cbd5e1;
+      --chat-bg: #ffffff;
+      --chat-bubble-user: #eff6ff;
+      --chat-bubble-bot: #f1f5f9;
+      --chat-text: #0f172a;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0a0f1e;
+      --bg-secondary: #111827;
+      --surface-card: #1a2332;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-light: #2d3a4f;
+      --accent-blue: #3b82f6;
+      --accent-blue-light: #60a5fa;
+      --accent-blue-dark: #2563eb;
+      --accent-glow: rgba(59, 130, 246, 0.15);
+      --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 20px 25px -12px rgba(0, 0, 0, 0.4);
+      --navbar-bg: rgba(10, 15, 30, 0.98);
+      --navbar-border: #2d3a4f;
+      --card-border: #2d3a4f;
+      --chat-bg: #1e293b;
+      --chat-bubble-user: #1e3a5f;
+      --chat-bubble-bot: #2d3a4f;
+      --chat-text: #f1f5f9;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.2s ease;
+      line-height: 1.5;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--navbar-border);
+      padding: 1rem 0;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+
+    .logo-icon {
+      background: var(--gradient-vibrant);
+      background-size: 200% 200%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      font-size: 1.4rem;
+    }
+
+    .logo-text {
+      color: var(--text-primary);
+    }
+
+    .blue-accent {
+      background: linear-gradient(135deg, #1e40af, #3b82f6, #60a5fa, #3b82f6, #1e40af);
+      background-size: 300% 300%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: gradientShift 2s ease infinite;
+      font-weight: 700;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-link i {
+      background: var(--gradient-vibrant);
+      background-size: 200% 200%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .nav-link:hover {
+      background: var(--gradient-vibrant);
+      background-size: 200% 200%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .theme-btn {
+      background: var(--surface-card);
+      border: 1px solid var(--border-light);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 5rem 0 4rem;
+    }
+
+    .hero-container {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-content {
+      flex: 1;
+    }
+
+    .hero-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: white;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    .social-mini a {
+      color: var(--text-muted);
+      font-size: 2rem;
+      margin-right: 1rem;
+    }
+
+    .profile-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+    }
+
+    .image-frame {
+      max-width: 400px;
+    }
+
+    /* Sections */
+    .section {
+      padding: 4rem 0;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-category {
+      background: var(--surface-card);
+      border-radius: 20px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-light);
+    }
+
+    .skill-tag {
+      background: var(--bg-secondary);
+      padding: 0.4rem 1rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.2rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--surface-card);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+
+    .project-img img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .project-info {
+      padding: 1.5rem;
+    }
+
+    .contact-card {
+      display: flex;
+      background: var(--surface-card);
+      border-radius: 28px;
+      overflow: hidden;
+    }
+
+    .contact-left {
+      background: linear-gradient(135deg, #1e40af, #2563eb);
+      color: white;
+      padding: 2rem;
+    }
+
+    .contact-right {
+      padding: 2rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 0.8rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      color: var(--text-primary);
+    }
+
+    /* Floating Chatbot */
+    .chatbot-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .chatbot-toggle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #1e40af);
+      border: none;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      font-size: 24px;
+      transition: transform 0.2s;
+    }
+
+    .chatbot-toggle:hover {
+      transform: scale(1.05);
+    }
+
+    .chatbot-window {
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      width: 320px;
+      background: var(--chat-bg);
+      border-radius: 20px;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+      border: 1px solid var(--border-light);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .chatbot-window.active {
+      display: flex;
+    }
+
+    .chat-header {
+      padding: 16px;
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: white;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chat-messages {
+      padding: 16px;
+      height: 280px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: var(--chat-bg);
+    }
+
+    .message {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      word-wrap: break-word;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .message.bot {
+      background: var(--chat-bubble-bot);
+      color: var(--chat-text);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .message.user {
+      background: var(--accent-blue);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .quick-replies {
+      padding: 12px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: var(--chat-bg);
+    }
+
+    .quick-reply-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      padding: 8px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .quick-reply-btn:hover {
+      background: var(--accent-blue);
+      color: white;
+      border-color: var(--accent-blue);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .hero-container {
+        flex-direction: column;
+      }
+      .chatbot-window {
+        width: 280px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Navigation / Header -->
   <nav class="navbar">
     <div class="nav-container">
       <div class="logo">
@@ -31,329 +483,199 @@
         <a href="#about" class="nav-link"><i class="fas fa-user"></i> About</a>
         <a href="#skills" class="nav-link"><i class="fas fa-code-branch"></i> Skills</a>
         <a href="#projects" class="nav-link"><i class="fas fa-folder-open"></i> Projects</a>
-        <a href="#certificates" class="nav-link"><i class="fas fa-certificate"></i> Certificates</a>
         <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
       </div>
-      <div class="theme-toggle-wrapper">
-        <button class="theme-btn" id="themeToggle" aria-label="Switch theme">
-          <i class="fas fa-moon" id="themeIcon"></i>
-        </button>
-        <div class="mobile-menu-btn" id="mobileMenuBtn">
-          <i class="fas fa-bars"></i>
-        </div>
-      </div>
+      <button class="theme-btn" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i></button>
     </div>
   </nav>
 
-  <!-- Main Content -->
   <main>
-    <!-- Hero Section (with profile picture space) -->
     <section id="home" class="hero section">
       <div class="container hero-container">
         <div class="hero-content">
-          <div class="hero-badge">
-            <span class="badge-pulse"></span> Available for opportunities
-          </div>
-          <h1 class="hero-title">
-            Hello!<br />
-            I'm <span class="blue-gradient">Kairy Ken Magno</span>
-            <p class="hero-desc">
-              A <span class="typed-role" id="typedRole"></span>
-            </p>
-          </h1>
-          <p class="hero-desc-full">
-            I build and maintain digital solutions that blend functionality, performance, and creativity.
-            From developing web applications with Laravel, designing games with Unity, to managing server
-            environments with Proxmox, I enjoy turning complex problems into simple, reliable, and engaging experiences.
-          </p>
-          <div class="hero-buttons">
+          <h1 class="hero-title">Hello! I'm <span class="blue-accent">Kairy Ken Magno</span></h1>
+          <p style="font-size: 1.3rem; margin: 1rem 0;">Web Developer • Game Dev • IT Support</p>
+          <p style="color: var(--text-secondary); max-width: 500px;">I build digital solutions blending functionality, performance, and creativity. From Laravel apps to Unity games and server management.</p>
+          <div style="margin: 2rem 0;">
             <a href="#projects" class="btn btn-primary"><i class="fas fa-arrow-down"></i> View Projects</a>
-            <a href="cv/KAIRY-MAGNO-CV.pdf" download class="btn btn-outline"><i class="fas fa-download"></i> Download CV</a>
+            <a href="#" class="btn btn-outline" style="margin-left: 1rem;"><i class="fas fa-download"></i> Download CV</a>
           </div>
           <div class="social-mini">
-            <a href="https://github.com/Kairyyyy" target="_blank" style="font-size: 2rem;"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/kairy-ken-magno-2464193a2/?skipRedirect=true" target="_blank" style="font-size: 2rem;"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://facebook.com/kairy" target="_blank" style="font-size: 2rem;"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
           </div>
         </div>
         <div class="hero-image">
           <div class="image-frame">
-            <div class="profile-pic-placeholder">
-              <img src="images/pic1.png" alt="Profile photo" class="profile-img" id="profileImg" />
-            </div>
-            <div class="floating-card card-1">
-              <i class="fas fa-code"></i> <span>Laravel & Web Dev</span>
-            </div>
-            <div class="floating-card card-2">
-              <i class="fas fa-rocket"></i> <span>Unity & IT Support</span>
-            </div>
+            <img src="https://ui-avatars.com/api/?background=2563eb&color=fff&bold=true&size=400&name=Kairy+Ken" alt="Profile" class="profile-img" id="profileImg">
           </div>
         </div>
       </div>
     </section>
 
-    <!-- About Me Section -->
     <section id="about" class="about section">
       <div class="container">
-        <div class="section-header">
-          <span class="section-subtitle">Get to know me</span>
-          <h2 class="section-title">About <span class="blue-accent">Me</span></h2>
-          <div class="section-divider"></div>
-        </div>
-        <div class="about-container">
-          <div class="about-image">
-            <div class="about-img-wrapper">
-              <img src="images/pic4.png" alt="Kairy Ken Magno" class="about-img" />
-            </div>
-          </div>
-          <div class="about-content">
-            <h3>I'm Kairy Ken Magno, <span class="blue-accent">creative developer</span> & problem solver</h3>
-            <p>I'm an aspiring full-stack developer with a passion for building responsive and user-friendly web applications. I have hands-on experience with Laravel and enjoy turning ideas into functional digital solutions.</p>
-            <p>I focus on writing clean and maintainable code while continuously improving my skills in both development and design. I'm also exploring game development with Unity and have experience with basic server setup and hardware troubleshooting.</p>
-            <a href="#contact" class="btn btn-primary"><i class="fas fa-comment"></i> Let's Connect</a>
-            <a href="cv/KAIRY-MAGNO-CV.pdf" download class="btn btn-outline"><i class="fas fa-download"></i> Download CV</a>
-          </div>
-        </div>
+        <h2 class="section-title">About <span class="blue-accent">Me</span></h2>
+        <p style="max-width: 700px; margin-top: 1rem;">I'm an aspiring full-stack developer passionate about responsive web apps, game development with Unity, and server/IT support. I enjoy turning complex problems into clean, engaging digital experiences.</p>
       </div>
     </section>
 
-    <!-- Skills Section - Icons next to each skill name -->
     <section id="skills" class="skills section">
       <div class="container">
-        <div class="section-header">
-          <span class="section-subtitle">Core competencies</span>
-          <h2 class="section-title">Expertise & <span class="blue-accent">Technical Skills</span></h2>
-          <div class="section-divider"></div>
+        <h2 class="section-title">Technical <span class="blue-accent">Skills</span></h2>
+        <div class="skills-grid" style="margin-top: 2rem;">
+          <div class="skill-category"><h3><i class="fas fa-globe"></i> Web Dev</h3><div class="skill-items"><span class="skill-tag"><i class="fab fa-html5"></i> HTML5</span><span class="skill-tag"><i class="fab fa-css3-alt"></i> CSS3</span><span class="skill-tag"><i class="fab fa-js"></i> JavaScript</span><span class="skill-tag"><i class="fab fa-react"></i> React</span><span class="skill-tag"><i class="fab fa-php"></i> PHP/Laravel</span></div></div>
+          <div class="skill-category"><h3><i class="fas fa-gamepad"></i> Game Dev</h3><div class="skill-items"><span class="skill-tag"><i class="fab fa-unity"></i> Unity</span><span class="skill-tag">C#</span><span class="skill-tag">Blender</span></div></div>
+          <div class="skill-category"><h3><i class="fas fa-server"></i> IT/DevOps</h3><div class="skill-items"><span class="skill-tag">Proxmox</span><span class="skill-tag">VM Management</span><span class="skill-tag">Hardware</span></div></div>
         </div>
-        <div class="skills-grid">
-          <!-- Web Development / Frontend -->
-          <div class="skill-category">
-            <div class="category-header">
-              <i class="fas fa-globe"></i>
-              <h3>Web Development / Frontend</h3>
-            </div>
-            <div class="skill-items">
-              <span class="skill-tag"><i class="fab fa-html5" style="color: #E34F26;"></i> HTML5</span>
-              <span class="skill-tag"><i class="fab fa-css3-alt" style="color: #264DE4;"></i> CSS3</span>
-              <span class="skill-tag"><i class="fab fa-js" style="color: #F7DF1E;"></i> JavaScript</span>
-              <span class="skill-tag"><i class="fab fa-react" style="color: #61DAFB;"></i> ReactJS</span>
-              <span class="skill-tag"><i class="fab fa-bootstrap" style="color: #7952B3;"></i> Bootstrap</span>
-              <span class="skill-tag"><i class="devicon-tailwindcss-plain" style="color: #06B6D4;"></i> Tailwind</span>
-              <span class="skill-tag"><i class="fas fa-mobile-alt"></i> Responsive Design</span>
-              <span class="skill-tag"><i class="fas fa-paint-brush"></i> UI/UX Design Principles</span>
-            </div>
-          </div>
+      </div>
+    </section>
 
-          <!-- Backend / Databases -->
-          <div class="skill-category">
-            <div class="category-header">
-              <i class="fas fa-server"></i>
-              <h3>Backend / Databases</h3>
-            </div>
-            <div class="skill-items">
-              <span class="skill-tag"><i class="fab fa-php" style="color: #777BB4;"></i> PHP (Laravel Framework)</span>
-              <span class="skill-tag"><i class="fab fa-python" style="color: #3776AB;"></i> Python (Web Dev/Scripting)</span>
-              <span class="skill-tag"><i class="fas fa-database" style="color: #4479A1;"></i> MySQL</span>
-              <span class="skill-tag"><i class="fas fa-leaf" style="color: #47A248;"></i> MongoDB</span>
-              <span class="skill-tag"><i class="fas fa-plug"></i> REST APIs</span>
-              <span class="skill-tag"><i class="fas fa-layer-group"></i> MVC Architecture</span>
-            </div>
+    <section id="projects" class="projects section">
+      <div class="container">
+        <h2 class="section-title">Featured <span class="blue-accent">Projects</span></h2>
+        <div class="projects-grid" style="margin-top: 2rem;">
+          <div class="project-card">
+            <div class="project-img"><img src="https://placehold.co/600x400/2563eb/white?text=Finding+Isabel" alt="Game"></div>
+            <div class="project-info"><h3>The Finding of Isabel</h3><p>3D horror game built with Unity and C# as a capstone project.</p><span class="skill-tag">Unity</span><span class="skill-tag">C#</span></div>
           </div>
-
-          <!-- Programming Fundamentals (NEW CATEGORY) -->
-          <div class="skill-category">
-            <div class="category-header">
-              <i class="fas fa-code"></i>
-              <h3>Programming Fundamentals</h3>
-            </div>
-            <div class="skill-items">
-              <span class="skill-tag"><i class="fab fa-java" style="color: #007396;"></i> Java (OOP)</span>
-            </div>
-          </div>
-
-          <!-- Mobile & App Development -->
-          <div class="skill-category">
-            <div class="category-header">
-              <i class="fas fa-mobile-alt"></i>
-              <h3>Mobile & App Development</h3>
-            </div>
-            <div class="skill-items">
-              <span class="skill-tag"><i class="devicon-flutter-plain" style="color: #02569B;"></i> Flutter</span>
-            </div>
-          </div>
-
-          <!-- Game Development -->
-          <div class="skill-category">
-            <div class="category-header">
-              <i class="fas fa-gamepad"></i>
-              <h3>Game Development</h3>
-            </div>
-            <div class="skill-items">
-              <span class="skill-tag"><i class="fab fa-unity" style="color: #FFFFFF;"></i> Unity</span>
-              <span class="skill-tag"><i class="fas fa-code"></i> C# (Unity Scripting)</span>
-            </div>
-          </div>
-
-          <!-- 3D & Design -->
-          <div class="skill-category">
-            <div class="category-header">
-              <i class="fas fa-cube"></i>
-              <h3>3D & Design</h3>
-            </div>
-            <div class="skill-items">
-              <span class="skill-tag"><i class="devicon-blender-original" style="color: #F5792A;"></i> Blender</span>
-            </div>
-          </div>
-
-          <!-- Hardware / IT / DevOps -->
-          <div class="skill-category">
-            <div class="category-header">
-              <i class="fas fa-microchip"></i>
-              <h3>Hardware / IT / DevOps</h3>
-            </div>
-            <div class="skill-items">
-              <span class="skill-tag"><i class="fas fa-microchip"></i> Arduino (Embedded Systems)</span>
-              <span class="skill-tag"><i class="fas fa-desktop"></i> PC & Server Assembly</span>
-              <span class="skill-tag"><i class="fas fa-cloud"></i> Proxmox / Virtual Machines</span>
-              <span class="skill-tag"><i class="fas fa-network-wired"></i> Network Basics</span>
-            </div>
-          </div>
-
-          <!-- Productivity & Office -->
-          <div class="skill-category">
-            <div class="category-header">
-              <i class="fas fa-file-alt"></i>
-              <h3>Productivity & Office</h3>
-            </div>
-            <div class="skill-items">
-              <span class="skill-tag"><i class="fas fa-file-word" style="color: #2B579A;"></i> Microsoft Word</span>
-              <span class="skill-tag"><i class="fas fa-file-excel" style="color: #21A366;"></i> Microsoft Excel</span>
-              <span class="skill-tag"><i class="fas fa-file-powerpoint" style="color: #D24726;"></i> PowerPoint</span>
-            </div>
-          </div>
-
-          <!-- Soft Skills -->
-          <div class="skill-category">
-            <div class="category-header">
-              <i class="fas fa-users"></i>
-              <h3>Soft Skills</h3>
-            </div>
-            <div class="skill-items">
-              <span class="skill-tag"><i class="fas fa-brain"></i> Problem-Solving</span>
-              <span class="skill-tag"><i class="fas fa-eye"></i> Attention to Detail</span>
-              <span class="skill-tag"><i class="fas fa-comments"></i> Communication</span>
-              <span class="skill-tag"><i class="fas fa-users-cog"></i> Team Collaboration</span>
-              <span class="skill-tag"><i class="fas fa-graduation-cap"></i> Continuous Learning</span>
-            </div>
+          <div class="project-card">
+            <div class="project-img"><img src="https://placehold.co/600x400/1e40af/white?text=HOOPS+Hub" alt="App"></div>
+            <div class="project-info"><h3>HOOPS Hub</h3><p>Manufacturing software demo built with Flutter and Android Studio.</p><span class="skill-tag">Flutter</span><span class="skill-tag">Android</span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Projects Section -->
-  <section id="projects" class="projects section">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-subtitle">Recent work</span>
-        <h2 class="section-title">Featured <span class="blue-accent">Projects</span></h2>
-        <div class="section-divider"></div>
-      </div>
-      <div class="projects-grid">
-        <!-- Project Card 1 -->
-        <a href="https://www.youtube.com/watch?v=XxoQJfI3ArE&t=25s" target="_blank" class="project-card" rel="noopener noreferrer">
-          <div class="project-img">
-            <img src="images/FindingIsabel.png" alt="The Finding of Isabel">
-            <div class="project-img-overlay">
-              <i class="fas fa-play-circle"></i>
-              <span>Watch Gameplay</span>
-            </div>
-          </div>
-          <div class="project-divider"></div>
-          <div class="project-info">
-            <h3>The Finding of Isabel</h3>
-            <p>A 3D single-player horror game built with Unity and C# as a capstone project (2024–2025). Featuring a 3D model of the University of Rizal System (Binangonan Campus), exploration, puzzles, and immersive storytelling.</p>
-            <div class="project-tags"><span>C#</span><span>Unity</span><span>Blender</span></div>
-          </div>
-        </a>      
-        
-        <!-- Project Card 2 -->
-        <a href="https://www.youtube.com/shorts/fCwaNGsBXPI" target="_blank" class="project-card" rel="noopener noreferrer">
-          <div class="project-img">
-            <img src="images/HoopsHub.jpg" alt="Project Name">
-            <div class="project-img-overlay">
-              <i class="fas fa-play-circle"></i>
-              <span>Watch HOOPS Hub</span>
-            </div>
-          </div>
-          <div class="project-divider"></div>
-          <div class="project-info">
-            <h3>HOOPS Hub</h3>
-            <p>Manufacturing Software – A simple academic project designed to help demonstrate how businesses can monitor production processes, improve workflow organization, and support basic quality control in a manufacturing setup. This system was created for educational purposes as part of a school requirement.</p>
-            <div class="project-tags"><span>Android Studio</span><span>Flutter</span><span>Virtual Device</span></div>
-          </div>
-        </a>      
-      </div>
-    </div>
-  </section>
-
-    <!-- Lightbox Modal -->
-    <div id="lightbox-modal" class="lightbox-modal">
-      <span class="close-lightbox">&times;</span>
-      <img class="lightbox-content" id="lightbox-img">
-      <div class="lightbox-caption" id="lightbox-caption"></div>
-    </div>
-
-    <!-- Contact Section -->
     <section id="contact" class="contact section">
       <div class="container">
-        <div class="section-header">
-          <span class="section-subtitle">Get in touch</span>
-          <h2 class="section-title">Contact <span class="blue-accent">Me</span></h2>
-          <div class="section-divider"></div>
-        </div>
-        <div class="contact-card">
+        <h2 class="section-title">Contact <span class="blue-accent">Me</span></h2>
+        <div class="contact-card" style="margin-top: 2rem;">
           <div class="contact-left">
-            <i class="fas fa-comment" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
-            <p style="line-height: 1.6; margin-bottom: 1.5rem;">I'm a recent graduate passionate about web and game development. If you'd like to collaborate, share ideas, or just say hi, feel free to reach out to me via email—I'm always happy to connect!</p>
-            <div class="contact-detail">
-              <i class="fas fa-envelope"></i> kairykenm@gmail.com
-            </div>
-            <div class="contact-detail">
-              <i class="fas fa-phone-alt"></i> +63 (915) 957-4952
-            </div>
-            <div class="contact-detail">
-              <i class="fas fa-map-marker-alt"></i> Philippines
-            </div>
-            <div class="social-mini" style="margin-top: 2rem;">
-              <a href="https://github.com/Kairyyyy" target="_blank" style="color: white; font-size: 1.5rem;"><i class="fab fa-github"></i></a>
-              <a href="https://www.linkedin.com/in/kairy-ken-magno-2464193a2/?skipRedirect=true" target="_blank" style="color: white; font-size: 1.5rem;"><i class="fab fa-linkedin-in"></i></a>
-              <a href="https://facebook.com/kairy" target="_blank" style="color: white; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
-            </div>
+            <p style="font-size: 1.2rem; margin-bottom: 1rem;">Let's connect!</p>
+            <p><i class="fas fa-envelope"></i> kairykenm@gmail.com</p>
+            <p><i class="fas fa-phone-alt"></i> +63 915 957 4952</p>
           </div>
           <div class="contact-right">
-            <form id="contactForm">
-              <input type="email" id="userEmail" placeholder="Your email address" required />
-              <input type="text" id="userSubject" placeholder="Subject" required />
-              <textarea id="userMessage" rows="5" placeholder="Write your message here..." required></textarea>
-              <button type="submit" class="btn btn-primary full-width" id="sendBtn">Send Message <i class="fas fa-paper-plane"></i></button>
-              <div id="formStatus" style="margin-top: 1rem; text-align: center; font-size: 0.85rem;"></div>
-            </form>
+            <input type="email" placeholder="Your email" />
+            <input type="text" placeholder="Subject" />
+            <textarea rows="4" placeholder="Message..."></textarea>
+            <button class="btn btn-primary" style="width:100%;">Send Message</button>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container footer-container">
-      <p>&copy; 2026 Kairy Ken Magno — Designing digital experiences with <i class="fas fa-heart" style="color: #3b82f6;"></i> & responsive design.</p>
-    </div>
+  <footer style="text-align: center; padding: 2rem; color: var(--text-muted);">
+    <p>© 2026 Kairy Ken Magno — All rights reserved.</p>
   </footer>
 
-  <!-- Link to external JavaScript -->
-  <script src="js/script.js"></script>
-  <!-- EmailJS Library -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <!-- FLOATING CHATBOT -->
+  <div class="chatbot-container" id="chatbotContainer">
+    <div class="chatbot-window" id="chatWindow">
+      <div class="chat-header">
+        <i class="fas fa-robot"></i> Kairy's Bot
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot">👋 Hi! I'm Kairy's assistant. Tap a question below to learn more about me.</div>
+      </div>
+      <div class="quick-replies" id="quickReplies">
+        <button class="quick-reply-btn" data-question="Who is Kairy?">👤 Who is Kairy?</button>
+        <button class="quick-reply-btn" data-question="What are his top skills?">⚡ Top skills</button>
+        <button class="quick-reply-btn" data-question="Tell me about his projects">📁 Projects</button>
+        <button class="quick-reply-btn" data-question="How can I contact him?">📬 Contact</button>
+      </div>
+    </div>
+    <button class="chatbot-toggle" id="chatbotToggle">
+      <i class="fas fa-comment-dots"></i>
+    </button>
+  </div>
+
+  <script>
+    (function() {
+      // Theme toggler
+      const themeBtn = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const html = document.documentElement;
+      
+      const getTheme = () => localStorage.getItem('portfolio-theme') || 'light';
+      const setTheme = (theme) => {
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('portfolio-theme', theme);
+        if (themeIcon) {
+          themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+      };
+      
+      setTheme(getTheme());
+      if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+          const current = html.getAttribute('data-theme');
+          setTheme(current === 'dark' ? 'light' : 'dark');
+        });
+      }
+
+      // Chatbot logic
+      const chatWindow = document.getElementById('chatWindow');
+      const chatToggle = document.getElementById('chatbotToggle');
+      const chatMessages = document.getElementById('chatMessages');
+      const quickRepliesContainer = document.getElementById('quickReplies');
+
+      // Toggle window
+      if (chatToggle) {
+        chatToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          chatWindow.classList.toggle('active');
+        });
+      }
+
+      // Close when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.chatbot-container')) {
+          chatWindow.classList.remove('active');
+        }
+      });
+
+      // Predefined answers
+      const answers = {
+        "Who is Kairy?": "Kairy Ken Magno is a passionate developer from the Philippines. He specializes in web development (Laravel, React), game development (Unity, C#), and IT support/server management.",
+        "What are his top skills?": "💻 Web: HTML, CSS, JavaScript, React, PHP/Laravel. 🎮 Game Dev: Unity, C#, Blender. ⚙️ IT: Proxmox, VM management, hardware assembly, networking basics.",
+        "Tell me about his projects": "🔹 'The Finding of Isabel' – a 3D horror game built with Unity. 🔹 'HOOPS Hub' – a Flutter manufacturing software demo. Both showcase his creative and technical range.",
+        "How can I contact him?": "📧 Email: kairykenm@gmail.com 📱 Phone: +63 915 957 4952. He's always open to collaboration and new opportunities!"
+      };
+
+      function addMessage(text, type) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${type}`;
+        msgDiv.textContent = text;
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Handle quick reply clicks
+      if (quickRepliesContainer) {
+        quickRepliesContainer.addEventListener('click', (e) => {
+          const btn = e.target.closest('.quick-reply-btn');
+          if (!btn) return;
+          
+          const question = btn.getAttribute('data-question');
+          if (!question) return;
+          
+          // Add user message
+          addMessage(question, 'user');
+          
+          // Simulate bot thinking then answer
+          setTimeout(() => {
+            const answer = answers[question] || "That's a great question! Feel free to ask anything else.";
+            addMessage(answer, 'bot');
+          }, 400);
+        });
+      }
+
+      // Initial bot message already in HTML
+    })();
+  </script>
 </body>
 </html>
-```
